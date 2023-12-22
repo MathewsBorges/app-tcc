@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:saude/src/models/Paciente.dart';
 import 'package:saude/src/pages/loginPage.dart';
+import 'package:saude/src/pages/unidadesPage.dart';
 
 class home extends StatelessWidget {
   static Paciente? paciente;
@@ -209,6 +210,7 @@ class home extends StatelessWidget {
                           ],
                         ),
                       ),
+                
                     ],
                   ),
                 ),
@@ -241,10 +243,14 @@ class home extends StatelessWidget {
                               children: [
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                                  child: Icon(
-                                    Icons.edit_calendar_rounded,
+                                  child: IconButton(icon:Icon
+                                    (Icons.edit_calendar_rounded,
                                     color: Color(0xffffffff),
-                                    size: 52,
+                                    size: 52),
+                                    onPressed: (){
+                                        Navigator.push(
+                                            context, MaterialPageRoute(builder: (context) => unidadesPage()));
+                                     },
                                   ),
                                 ),
                                 Column(
