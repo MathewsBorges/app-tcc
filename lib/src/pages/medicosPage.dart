@@ -6,6 +6,7 @@ import 'package:saude/src/models/Unidade.dart';
 class medicosPage extends StatefulWidget {
   const medicosPage({Key? key}) : super(key: key);
   static Medico? medico;
+  static Unidade? unidade;
   @override
   State<medicosPage> createState() => _medicosPageState();
 }

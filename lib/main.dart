@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 
 import 'package:saude/src/models/Paciente.dart';
+import 'package:saude/src/models/Unidade.dart';
 import 'package:saude/src/pages/loginPage.dart';
 import 'package:saude/src/pages/homePage.dart';
 
 void main() async {
   runApp(const MyApp());
- 
+// teste();
 }
 
 Future<void> teste() async {
- List<Paciente> pacientes = await Paciente.carregarPacientes();
-  pacientes.forEach((element) {
+ List<Unidade> unidades = await Unidade.listarUnidades("1");
+  unidades.forEach((element) {
     print(element.nome);
-    print(element.dataNascimento);
+
   });
 }
 
