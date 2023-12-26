@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:saude/src/controllers/PacienteController.dart';
 import 'package:saude/src/models/Paciente.dart';
@@ -643,7 +643,6 @@ class _LoginPageState extends State<LoginPage> {
 
   cadastrar(context) async {
     List<String> cidades = ["Não Encontrada", "Camaquã-RS"];
-    int codigo = 1;
     String nome = _nomeCadastro.text;
     String sobrenome = _sobrenomeCadastro.text;
     String cpf = _cpfCadastro.text;

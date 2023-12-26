@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'Usuario.dart';
 
 class Paciente extends Usuario {
+  int codigo = 0;
   String cartaoSUS = "";
 
   Paciente(codigo, nome, sobrenome, dataNascimento, cpf, sexo, telefone,
@@ -19,13 +20,13 @@ class Paciente extends Usuario {
   }
 
   Paciente.fromMap(Map map) : super.fromMap(map) {
+    codigo = map[PacientePropriedades.codigo];
     cartaoSUS = map[PacientePropriedades.cartao_sus];
   }
 
   Map<String, Object> toMap() {
     Map<String, Object> map = super.toMap(); // Chama o toMap() da classe pai
-    map[PacientePropriedades.cartao_sus] =
-        cartaoSUS; // Adiciona a propriedade cartao_sus
+    map[PacientePropriedades.cartao_sus] =cartaoSUS; // Adiciona a propriedade cartao_sus
     return map;
   }
 

@@ -23,7 +23,6 @@ class Usuario {
           this.telefone,this.endereco, this.cidade, this.email, this.senha);
  
     Usuario.fromMap(Map map) {
-    codigo = map[UsuarioPropriedades.codigo];
     nome = map[UsuarioPropriedades.nome];
     sobrenome = map[UsuarioPropriedades.sobrenome];
     dataNascimento = DateTime.parse(map[UsuarioPropriedades.data_nascimento]);
@@ -39,7 +38,6 @@ class Usuario {
   Map<String, Object> toMap() {
 
     Map<String, Object> map = {
-      UsuarioPropriedades.codigo: codigo,
       UsuarioPropriedades.nome: nome,
       UsuarioPropriedades.sobrenome: sobrenome,
       UsuarioPropriedades.data_nascimento: dataNascimento.toString(),

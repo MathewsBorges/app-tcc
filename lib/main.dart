@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-
-import 'package:saude/src/models/Paciente.dart';
 import 'package:saude/src/models/Unidade.dart';
 import 'package:saude/src/pages/loginPage.dart';
-import 'package:saude/src/pages/homePage.dart';
+
 
 void main() async {
   runApp(const MyApp());

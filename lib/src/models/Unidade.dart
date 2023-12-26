@@ -4,7 +4,7 @@ import 'package:saude/src/models/settings/UnidadePropriedade.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
-import 'package:saude/src/pages/unidadesPage.dart';
+
 
 class Unidade{
   int codigo = 0;

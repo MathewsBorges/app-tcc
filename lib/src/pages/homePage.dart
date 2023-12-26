@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:saude/src/models/Paciente.dart';
-import 'package:saude/src/pages/loginPage.dart';
+
 import 'package:saude/src/pages/unidadesPage.dart';
 
 class home extends StatelessWidget {

@@ -1,5 +1,4 @@
 class UsuarioPropriedades {
-  static String codigo = "pk_paciente";
   static String nome = "nome";
   static String sobrenome = "sobrenome";
   static String data_nascimento = "data_nascimento";
