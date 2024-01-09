@@ -17,7 +17,7 @@ class LoginPage extends StatefulWidget {
 PacienteController controller = new PacienteController();
 
 class _LoginPageState extends State<LoginPage> {
-  final _formkey = GlobalKey<FormState>();
+
   final TextEditingController _emailLogin = TextEditingController();
   final TextEditingController _senhaLogin = TextEditingController();
   final TextEditingController _nomeCadastro = TextEditingController();

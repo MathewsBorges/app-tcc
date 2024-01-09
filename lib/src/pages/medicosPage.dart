@@ -3,8 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:saude/src/controllers/MedicoController.dart';
 import 'package:saude/src/models/Medico.dart';
 import 'package:saude/src/models/Unidade.dart';
-import 'package:saude/src/pages/homePage.dart';
-import 'package:saude/src/pages/medicosPage.dart';
+import 'package:saude/src/pages/agendamentoPage.dart';
+
+
 
 class medicosPage extends StatefulWidget {
   const medicosPage({Key? key}) : super(key: key);
@@ -92,10 +93,11 @@ class _medicosPageState extends State<medicosPage> {
                 ),
                 IconButton(
                     onPressed: () => {
+                      agendamentoPage.medico = medico,
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => medicosPage()))
+                                  builder: (context) => agendamentoPage()))
                         },
                     icon: Icon(
                       Icons.arrow_forward_ios_rounded,
