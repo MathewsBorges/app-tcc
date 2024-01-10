@@ -9,7 +9,7 @@ import '../models/Unidade.dart';
 class agendamentoPage extends StatefulWidget {
   const agendamentoPage({Key? key}) : super(key: key);
 
-  static Unidade? unidade = medicosPage.unidade;
+  static Unidade? unidade;
   static Medico? medico;
 
   @override

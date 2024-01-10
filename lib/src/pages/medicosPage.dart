@@ -4,6 +4,7 @@ import 'package:saude/src/controllers/MedicoController.dart';
 import 'package:saude/src/models/Medico.dart';
 import 'package:saude/src/models/Unidade.dart';
 import 'package:saude/src/pages/agendamentoPage.dart';
+import 'package:saude/src/pages/unidadesPage.dart';
 
 
 
@@ -94,6 +95,7 @@ class _medicosPageState extends State<medicosPage> {
                 IconButton(
                     onPressed: () => {
                       agendamentoPage.medico = medico,
+                      agendamentoPage.unidade = medicosPage.unidade,
                           Navigator.push(
                               context,
                               MaterialPageRoute(
