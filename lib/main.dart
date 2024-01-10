@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:saude/src/models/Unidade.dart';
+import 'package:saude/src/models/Horarios.dart';
 import 'package:saude/src/pages/loginPage.dart';
 
 
 void main() async {
   runApp(const MyApp());
-// teste();
+ teste();
 }
 
 Future<void> teste() async {
- List<Unidade> unidades = await Unidade.listarUnidades("1");
-  unidades.forEach((element) {
-    print(element.nome);
-
-  });
+ List<int> horarios = await Horarios.listarDiasMedico(1, 1);
+   horarios.forEach((element) {print(element);});
 }
 
 class MyApp extends StatelessWidget {

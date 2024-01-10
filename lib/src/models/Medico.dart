@@ -12,6 +12,9 @@ int codigo = 0;
 String crm ="";
 String especialidade="";
 
+
+
+
   Medico(codigo, nome, sobrenome, dataNascimento, cpf, sexo, telefone, endereco,
       cidade, email, senha, this.crm, this.especialidade): super(codigo, nome, sobrenome, dataNascimento, cpf, sexo, telefone,
       endereco, cidade, email, senha);
