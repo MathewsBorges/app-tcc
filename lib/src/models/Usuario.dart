@@ -1,8 +1,7 @@
-import 'package:http/http.dart';
+
 
 import 'settings/UsuarioPropriedade.dart';
-import 'settings/PacientePropriedade.dart';
-import 'package:intl/intl.dart';
+
 class Usuario {
   int codigo = 0;
   String nome = "";

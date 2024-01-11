@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:saude/src/controllers/HorariosController.dart';
+import 'package:saude/src/models/Horarios.dart';
 import 'package:saude/src/pages/medicosPage.dart';
 
 import '../models/Medico.dart';
@@ -19,10 +20,17 @@ class agendamentoPage extends StatefulWidget {
 class Datas {
   String data = "";
   String dia = "";
-  Datas(this.data, this.dia);
+  int? diaSemana = 0;
+  Datas(this.data, this.dia, this.diaSemana);
 }
+
 bool isSelected = false;
-String? selectedDay;
+bool isSelectedTime = false;
+
+String? selectedDay = null;
+int? selectedDayWeek = null;
+String? selectedTime =null;
+
 class _agendamentoPageState extends State<agendamentoPage> {
   static HorariosController horariosController = new HorariosController();
 
@@ -115,7 +123,12 @@ class _agendamentoPageState extends State<agendamentoPage> {
                     color: Colors.grey[800])),
           ),
         ),
-        Padding(
+        Card(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+                 Padding(
           padding: EdgeInsets.fromLTRB(16, 20, 16, 16),
           child: Text(
             "Dias Disponíveis",
@@ -129,9 +142,10 @@ class _agendamentoPageState extends State<agendamentoPage> {
             ),
           ),
         ),
-        Container(
-          height: 100,
-
+       Padding(
+        padding: EdgeInsets.fromLTRB(12, 0, 0, 12),
+        child: Container(
+          height: 90,
           child: FutureBuilder<List<Datas>>(
               future: gerarDatas(),
               builder: ((context, snapshot) {
@@ -148,11 +162,9 @@ class _agendamentoPageState extends State<agendamentoPage> {
                     height: 10,
                     constraints: BoxConstraints(maxHeight: 10, minHeight: 10),
                     child: ListView.builder(
-
                       scrollDirection: Axis.horizontal,
-                                          itemCount: data?.length,
+                      itemCount: data?.length,
                       itemBuilder: (context, index) {
-                  
                         return cardData(data![index]);
                       },
                     ),
@@ -160,6 +172,7 @@ class _agendamentoPageState extends State<agendamentoPage> {
                 }
               })),
         ),
+       ),
         Padding(
           padding: EdgeInsets.fromLTRB(16, 20, 16, 16),
           child: Text(
@@ -174,6 +187,83 @@ class _agendamentoPageState extends State<agendamentoPage> {
             ),
           ),
         ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(12, 0, 0, 12),
+          child: Container(
+            height: 70,
+            child: selectedDay != null
+                ? FutureBuilder<List<Horarios>>(
+                    future: getHorariosDisponives(),
+                    builder: ((context, snapshot) {
+                      print(snapshot.data);
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(
+                            child: Text('Não foi possível carregar os dias'));
+                      } else {
+                        List<Horarios>? horario = snapshot.data;
+                        // print(medicos?[0].nome);
+                        return Container(
+                          height: 10,
+                          constraints:
+                              BoxConstraints(maxHeight: 10, minHeight: 10),
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: horario?.length,
+                            itemBuilder: (context, index) {
+                              return cardHorario(horario![index]);
+                            },
+                          ),
+                        );
+                      }
+                    }))
+                : Center(child:Text("Escolha um dia para visualizar os horários"))),
+        ),
+        Center(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(16, 42, 16, 32),
+            child: selectedTime != null
+                ? MaterialButton(
+                    onPressed: () async {},
+                    color: Color(0xff01978b),
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40.0),
+                    ),
+                    padding: EdgeInsets.all(16),
+                    child: Text(
+                      "Agendar Consulta",
+                      style: GoogleFonts.getFont('Outfit',
+                          textStyle: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white)),
+                    ),
+                    textColor: Color(0xffffffff),
+                    height: 50,
+                    minWidth: 230,
+                  )
+                : Text("Selecione o Dia e o horário"),
+          ),
+        ),
+       Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+            Container(
+          height: 50,
+          width: 320,
+          alignment: Alignment.center,
+          child: Text(
+              "Lembre-se sua consulta somente será válida no dia mediante a apresentação de identidade e cartão SUS", textAlign: TextAlign.center,),
+        )
+        ],
+       ),
+      
+            ],
+          ),
+        ),
+      
       ],
     );
   }
@@ -185,7 +275,7 @@ class _agendamentoPageState extends State<agendamentoPage> {
         agendamentoPage.medico?.codigo, agendamentoPage.unidade?.codigo);
     // Data de início: primeiro dia deste mês
     DateTime startDate =
-        DateTime.now().subtract(Duration(days: DateTime.now().day - 1));
+        DateTime.now();
 
     // Data final: 3 meses (aproximadamente 90 dias) a partir do início
     DateTime endDate = startDate.add(Duration(days: 90));
@@ -210,60 +300,129 @@ class _agendamentoPageState extends State<agendamentoPage> {
         // Formatando a data para o padrão "dd/mm/yyyy"
         String formattedDate =
             "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year.toString()}";
-        datas.add(new Datas(formattedDate,
-            diasSemana[date.weekday])); // Adicionando a data formatada à lista
+        datas.add(new Datas(formattedDate, diasSemana[date.weekday],
+            adjustedDay)); // Adicionando a data formatada à lista
       }
     }
 
     return datas;
   }
 
-Widget cardData(Datas data) {
-  bool isDaySelected = selectedDay == data.data;
+  Future<List<Horarios>> getHorariosDisponives() async {
+    List<Horarios> horario = await horariosController.listarHorariosDisponiveis(
+        agendamentoPage.medico?.codigo,
+        agendamentoPage.unidade?.codigo,
+        selectedDay,
+        selectedDayWeek);
+    return horario;
+  }
 
-  return GestureDetector(
-    onTap: () {
-      setState(() {
-        if (isDaySelected) {
-          selectedDay = null; // Desselecionar o dia se já estiver selecionado
-        } else {
-          selectedDay = data.data; // Selecionar o dia
-        }
-      });
-    },
-    child: Card(
-      color: isDaySelected ? Color(0xff38d1bf) : null,  // Se for o dia selecionado, muda para verde
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                data.data,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.getFont('Outfit',
-                    textStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w500, color: isDaySelected? Colors.white :Colors.grey[700])),
+  Widget cardData(Datas data) {
+    bool isDaySelected = selectedDay == data.data;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          if (isDaySelected) {
+            selectedDay = null;
+            selectedDayWeek =
+                null; // Desselecionar o dia se já estiver selecionado
+          } else {
+            selectedDay = data.data;
+            selectedDayWeek =
+                data.diaSemana; // Desselecionar o dia se já estiver selecionado
+            // Selecionar o dia
+          }
+        });
+      },
+      child: Card(
+        color: isDaySelected
+            ? Color(0xff38d1bf)
+            : null, // Se for o dia selecionado, muda para verde
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  data.data,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.getFont('Outfit',
+                      textStyle: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w500,
+                          color:
+                              isDaySelected ? Colors.white : Colors.grey[700])),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: Text(
-                "${data.dia}",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.getFont('Outfit',
-                    textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: isDaySelected? Colors.white :Colors.grey[700])),
+              Padding(
+                padding: const EdgeInsets.only(right: 16),
+                child: Text(
+                  "${data.dia}",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.getFont('Outfit',
+                      textStyle: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          color:
+                              isDaySelected ? Colors.white : Colors.grey[700])),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
+  Widget cardHorario(Horarios horario) {
+    bool isTimeSelected = selectedTime == horario.horario;
 
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          if (isTimeSelected) {
+            selectedTime =
+                null; // Desselecionar o dia se já estiver selecionado
+          } else {
+            selectedTime = horario
+                .horario; // Desselecionar o dia se já estiver selecionado
+            // Selecionar o dia
+          }
+        });
+      },
+      child: Card(
+        color: isTimeSelected
+            ? Color(0xff38d1bf)
+            : null, // Se for o dia selecionado, muda para verde
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  horario.horario,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.getFont('Outfit',
+                      textStyle: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w500,
+                          color: isTimeSelected
+                              ? Colors.white
+                              : Colors.grey[700])),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

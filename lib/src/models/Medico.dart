@@ -1,4 +1,6 @@
-import 'package:saude/src/models/settings/MedicoPropriedade.dart';
+import 'settings/MedicoPropriedade.dart';
+import 'settings/connection.dart';
+
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -31,7 +33,7 @@ String especialidade="";
     static Future<List<Medico>> listarMedicosPorUnidade(String? id) async {
     try {
 
-      var url = Uri.http("10.1.1.141:5000", '/medico/unidade/${id}');
+      var url = Uri.http("${connection.address}", '/medico/unidade/${id}');
       http.Response resposta = await http.get(url);
 
       var dados = json.decode(resposta.body);

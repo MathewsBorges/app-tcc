@@ -1,6 +1,7 @@
 
 
-import 'package:saude/src/models/settings/UnidadePropriedade.dart';
+import 'settings/UnidadePropriedade.dart';
+import 'settings/connection.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -31,7 +32,7 @@ class Unidade{
 
   static Future<List<Unidade>> listarUnidades(String? id) async {
     try {
-      var url = Uri.http("10.1.1.141:5000", '/unidades/${id}',);
+      var url = Uri.http("${connection.address}", '/unidades/${id}',);
       http.Response resposta = await http.get(url);
 
       var dados = json.decode(resposta.body);

@@ -1,4 +1,6 @@
-import 'package:saude/src/models/settings/HorariosPropriedade.dart';
+import 'settings/HorariosPropriedade.dart';
+import 'settings/connection.dart';
+
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -24,7 +26,7 @@ class Horarios {
 
   static Future<List<int>> listarDiasMedico(int id, int unidade) async {
     try {
-      var url = Uri.http("10.1.1.141:5000", '/horarios/medico/');
+      var url = Uri.http("${connection.address}", '/horarios/medico/');
       Map<String, String> headers = {};
       headers['Content-Type'] = 'application/json';
 
@@ -50,6 +52,32 @@ class Horarios {
       }
 
       return dias;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  static Future<List<Horarios>> listarHorariosMedico(
+      String data, int dia, int medico, int unidade) async {
+    try {
+      var url = Uri.http("${connection.address}", '/horarios/medico/agendamento/');
+      Map<String, String> headers = {};
+      headers['Content-Type'] = 'application/json';
+
+      http.Response resposta = await http.post(url,
+          headers: headers,
+          body: jsonEncode({"medico": medico, "unidade": unidade, "dia": dia, "data":data}),
+          encoding: Encoding.getByName('utf-8'));
+
+      var dados = json.decode(resposta.body);
+
+      List<Horarios> lista = [];
+ 
+      for (Map horario in dados) {
+        lista.add(Horarios.fromMap(horario));
+      }
+
+      return lista;
     } catch (e) {
       return [];
     }

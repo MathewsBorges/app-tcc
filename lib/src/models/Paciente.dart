@@ -1,4 +1,6 @@
-import 'package:saude/src/models/settings/PacientePropriedade.dart';
+import 'settings/PacientePropriedade.dart';
+import 'settings/connection.dart';
+
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -32,7 +34,7 @@ class Paciente extends Usuario {
 
   static Future<List<Paciente>> carregarPacientes() async {
     try {
-      var url = Uri.http("10.1.1.141:5000", '/paciente');
+      var url = Uri.http("${connection.address}", '/paciente');
       http.Response resposta = await http.get(url);
 
       var dados = json.decode(resposta.body);
@@ -51,7 +53,7 @@ class Paciente extends Usuario {
   }
 
   Future<int> inserirPaciente(Paciente paciente) async {
-    var url = Uri.http("10.1.1.141:5000", '/paciente');
+    var url = Uri.http("${connection.address}", '/paciente');
     Map<String, String> headers = {};
     headers['Content-Type'] = 'application/json';
 
@@ -71,7 +73,7 @@ class Paciente extends Usuario {
   static Future<Paciente> login(email, senha) async {
     Paciente user =
         new Paciente(0, "", "", DateTime.now(), "", "", "", "", 1, "", "", "");
-    var url = Uri.http("10.1.1.141:5000", '/paciente/login');
+    var url = Uri.http("${connection.address}", '/paciente/login');
     Map<String, String> headers = {};
     headers['Content-Type'] = 'application/json';
 
