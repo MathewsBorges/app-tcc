@@ -58,7 +58,15 @@ class _unidadesPageState extends State<unidadesPage> {
   }
 
   unidadeCard(Unidade unidade) {
-    return Padding(
+    return GestureDetector(
+      onTap: (){
+          medicosPage.unidade = unidade;
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => medicosPage()));
+      },
+      child: Padding(
       padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
       child: Container(
         margin: EdgeInsets.all(4),
@@ -182,6 +190,6 @@ class _unidadesPageState extends State<unidadesPage> {
           ],
         ),
       ),
-    );
+    ));
   }
 }
