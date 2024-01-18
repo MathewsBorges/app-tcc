@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:saude/src/pages/cancelarConsulta.dart';
 import 'package:saude/src/pages/homePage.dart';
 import 'package:saude/src/pages/unidadesPage.dart';
 
@@ -28,6 +29,7 @@ class _minhasConsultasState extends State<minhasConsultas> {
   appBar(context) {
     return AppBar(
       title: Text("Minhas Consultas"),
+      
     );
   }
 
@@ -79,7 +81,16 @@ class _minhasConsultasState extends State<minhasConsultas> {
 
     // Formatando a data para o formato DD/MM/YYYY
     String formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        cancelarConsulta.agendamento = agenda;
+         Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              cancelarConsulta()));
+      },
+      child: Container(
       margin: EdgeInsets.all(4),
       width: 300,
       decoration: new BoxDecoration(
@@ -194,6 +205,6 @@ class _minhasConsultasState extends State<minhasConsultas> {
           ),
         ],
       ),
-    );
+    ));
   }
 }

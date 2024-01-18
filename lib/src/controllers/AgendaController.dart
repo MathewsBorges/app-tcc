@@ -13,4 +13,9 @@ class AgendaController {
     int status = await Agenda.agendarConsulta(data, horario, paciente);
     return status;
   } 
-}
+
+  Future<int> remover (id) async{
+    int status = await Agenda.removerConsulta(id);
+    return status;
+  }
+ }

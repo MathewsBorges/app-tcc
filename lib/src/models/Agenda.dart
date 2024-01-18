@@ -69,7 +69,26 @@ class Agenda {
           encoding: Encoding.getByName('utf-8'));
 
       var dados = json.decode(resposta.body);
-    
+
+      return dados;
+    } catch (e) {
+      return 404;
+    }
+  }
+
+  static Future<int> removerConsulta(id) async {
+    try {
+      var url = Uri.http("${connection.address}", '/agenda/');
+      Map<String, String> headers = {};
+      headers['Content-Type'] = 'application/json';
+
+      http.Response resposta = await http.delete(url,
+          headers: headers,
+          body: jsonEncode({"id": id}),
+          encoding: Encoding.getByName('utf-8'));
+
+      var dados = json.decode(resposta.body);
+
       return dados;
     } catch (e) {
       return 404;
