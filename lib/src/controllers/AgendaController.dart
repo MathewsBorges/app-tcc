@@ -8,4 +8,9 @@ class AgendaController {
     return agenda;
 
   }
+
+  Future<int> agendar (data, horario, paciente) async{
+    int status = await Agenda.agendarConsulta(data, horario, paciente);
+    return status;
+  } 
 }

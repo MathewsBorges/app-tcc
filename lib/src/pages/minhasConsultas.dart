@@ -52,12 +52,18 @@ class _minhasConsultasState extends State<minhasConsultas> {
           } else {
             List<Agenda>? agendamentos = snapshot.data;
 
-            return ListView.builder(
-              itemCount: agendamentos?.length,
-              itemBuilder: (context, index) {
-                return cardConsulta(agendamentos![index]);
-              },
-            );
+            if (agendamentos!.length > 0) {
+              return ListView.builder(
+                itemCount: agendamentos?.length,
+                itemBuilder: (context, index) {
+                  return cardConsulta(agendamentos![index]);
+                },
+              );
+            } else {
+              return Center(
+                child: Text("Você não tem consultas agendadas"),
+              );
+            }
           }
         }));
   }

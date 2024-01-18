@@ -41,18 +41,38 @@ class Agenda {
       var dados = json.decode(resposta.body);
       print(resposta.body);
       List<Agenda> lista = [];
-try {
-  
-      for (Map agenda in dados) {
-        lista.add(Agenda.fromMap(agenda));
+      try {
+        for (Map agenda in dados) {
+          lista.add(Agenda.fromMap(agenda));
+        }
+      } catch (e) {
+        print(e);
       }
-} catch (e) {
-  print(e);
-}
 
       return lista;
     } catch (e) {
       return [];
+    }
+  }
+
+  static Future<int> agendarConsulta(
+      String data, int horario, int paciente) async {
+    try {
+      var url = Uri.http("${connection.address}", '/agenda/');
+      Map<String, String> headers = {};
+      headers['Content-Type'] = 'application/json';
+
+      http.Response resposta = await http.post(url,
+          headers: headers,
+          body: jsonEncode(
+              {"data": data, "horario": horario, "paciente": paciente}),
+          encoding: Encoding.getByName('utf-8'));
+
+      var dados = json.decode(resposta.body);
+    
+      return dados;
+    } catch (e) {
+      return 404;
     }
   }
 }

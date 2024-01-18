@@ -5,15 +5,9 @@ import '/src/pages/loginPage.dart';
 
 void main() async {
   runApp(const MyApp());
- teste(1);
+
 }
 
- teste(id) async{
-  List<Agenda> agenda = await Agenda.getAgendamentosByPaciente(id);
-  print(agenda.isEmpty);
-  agenda.forEach((element) {print(element.paciente?.nome);});
-  
-}
 
 class MyApp extends StatelessWidget {
   const MyApp({key});

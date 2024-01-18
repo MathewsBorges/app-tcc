@@ -98,7 +98,8 @@ class home extends StatelessWidget {
                 } else {
                   List<Agenda>? agendamentos = snapshot.data;
                  // print(medicos?[0].nome);
-                  return ListView.builder(
+                 if(agendamentos!.length>0){
+ return ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: agendamentos?.length,
                     itemBuilder: (context, index) {
@@ -106,6 +107,10 @@ class home extends StatelessWidget {
                       return cardConsulta(agendamentos![index]);
                     },
                   );
+                 }else{
+                  return Center(child: Text("Você não tem agendamentos"));
+                 }
+                 
                 }
               }))
             ),
